@@ -1,6 +1,6 @@
 class PrototypesController < ApplicationController
   before_action :set_prototype, except: [:index, :new, :create]
-  before_action :authenticate_user!, except: [:show] 
+  before_action :authenticate_user!, except: [:show, :index] 
   before_action :contributor_confirmation, only: [:edit, :update, :destroy]
 
   def index
@@ -49,13 +49,11 @@ class PrototypesController < ApplicationController
 
 private
 
-  #def move_to_index
-    #unless user_signed_in?
-      #redirect_to action: :index
-    #end     
-  #end
-
-  private
+  def move_to_index
+    unless user_signed_in?
+      redirect_to action: :index
+    end     
+  end
 
   def prototypes_params
     params.require(:prototype).permit(:image, :title, :catch_copy, :concept ).merge(user_id: current_user.id)
